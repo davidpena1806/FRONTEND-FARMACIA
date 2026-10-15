@@ -1,0 +1,52 @@
+<div class="page-container">
+  <h1>Panel Principal</h1>
+
+  <div *ngIf="loading" style="display:flex; justify-content:center; padding:48px;">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div *ngIf="!loading" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:16px; margin-bottom:24px;">
+    <mat-card>
+      <mat-card-content>
+        <div style="font-size:13px; color:#777;">Productos activos</div>
+        <div style="font-size:28px; font-weight:600;">{{ totalProductos }}</div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card>
+      <mat-card-content>
+        <div style="font-size:13px; color:#777;">Clientes registrados</div>
+        <div style="font-size:28px; font-weight:600;">{{ totalClientes }}</div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card>
+      <mat-card-content>
+        <div style="font-size:13px; color:#777;">Estado de caja</div>
+        <div style="font-size:20px; font-weight:600;" [style.color]="cajaAbierta ? '#1e7e34' : '#c62828'">
+          {{ cajaAbierta ? 'Hay una caja abierta' : 'No hay caja abierta' }}
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card>
+      <mat-card-content>
+        <div style="font-size:13px; color:#777;">Productos con stock bajo</div>
+        <div style="font-size:28px; font-weight:600;" [style.color]="productosStockBajo.length > 0 ? '#c62828' : 'inherit'">
+          {{ productosStockBajo.length }}
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-card *ngIf="!loading && productosStockBajo.length > 0">
+    <mat-card-header>
+      <mat-card-title>⚠️ Productos por reabastecer</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ul>
+        <li *ngFor="let p of productosStockBajo">
+          {{ p.codigo }} - {{ p.nombre }}: stock {{ p.stock }} (mínimo {{ p.stockMinimo }})
+        </li>
+      </ul>
+      <a routerLink="/productos">Ver todos los productos →</a>
+    </mat-card-content>
+  </mat-card>
+</div>

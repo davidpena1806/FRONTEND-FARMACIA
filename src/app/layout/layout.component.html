@@ -1,0 +1,41 @@
+<mat-sidenav-container style="height: 100vh;">
+
+  <mat-sidenav mode="side" opened style="width: 260px;">
+    <div style="padding: 16px; font-weight:600; font-size:16px; display:flex; align-items:center; gap:8px;">
+      <mat-icon>local_pharmacy</mat-icon> Farmacia
+    </div>
+
+    <mat-nav-list>
+      <ng-container *ngFor="let group of navGroups">
+        <div style="padding: 8px 16px 4px; font-size:11px; font-weight:600; color:#888; text-transform:uppercase;">
+          {{ group.title }}
+        </div>
+        <a mat-list-item *ngFor="let item of group.items"
+           [routerLink]="item.path"
+           routerLinkActive="active-link"
+           [routerLinkActiveOptions]="{ exact: item.path === '/' }">
+          <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+          <span matListItemTitle>{{ item.label }}</span>
+        </a>
+      </ng-container>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <span>{{ title }}</span>
+      <span style="flex: 1 1 auto;"></span>
+      <ng-container *ngIf="auth.user$ | async as user">
+        <span style="font-size: 14px; margin-right: 12px;">
+          {{ user.nombre }} {{ user.apellido }}
+          <span *ngIf="user.rol" style="opacity: .75;">({{ user.rol.nombre }})</span>
+        </span>
+      </ng-container>
+      <button mat-stroked-button (click)="logout()">
+        <mat-icon>logout</mat-icon> Cerrar sesión
+      </button>
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>

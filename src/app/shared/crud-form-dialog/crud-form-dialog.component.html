@@ -1,0 +1,64 @@
+<h2 mat-dialog-title>{{ isEdit ? 'Editar' : 'Nuevo' }} {{ config.singular }}</h2>
+
+<mat-dialog-content>
+  <div *ngIf="loadingOptions" style="display:flex; justify-content:center; padding: 24px;">
+    <mat-spinner diameter="32"></mat-spinner>
+  </div>
+
+  <form *ngIf="!loadingOptions" [formGroup]="form" class="form-grid">
+    <ng-container *ngFor="let field of config.fields">
+
+      <mat-form-field *ngIf="field.type === 'text'" appearance="outline">
+        <mat-label>{{ field.label }}</mat-label>
+        <input matInput [formControlName]="field.key">
+        <mat-hint *ngIf="field.hint">{{ field.hint }}</mat-hint>
+        <mat-error *ngIf="form.get(field.key)?.hasError('required')">Campo requerido</mat-error>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="field.type === 'password'" appearance="outline">
+        <mat-label>{{ field.label }}</mat-label>
+        <input matInput type="password" autocomplete="new-password" [formControlName]="field.key">
+        <mat-hint *ngIf="field.hint">{{ field.hint }}</mat-hint>
+        <mat-error *ngIf="form.get(field.key)?.hasError('required')">Campo requerido</mat-error>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="field.type === 'textarea'" appearance="outline" style="grid-column: 1 / -1;">
+        <mat-label>{{ field.label }}</mat-label>
+        <textarea matInput rows="2" [formControlName]="field.key"></textarea>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="field.type === 'number'" appearance="outline">
+        <mat-label>{{ field.label }}</mat-label>
+        <input matInput type="number" step="0.01" [formControlName]="field.key">
+        <mat-hint *ngIf="field.hint">{{ field.hint }}</mat-hint>
+        <mat-error *ngIf="form.get(field.key)?.hasError('required')">Campo requerido</mat-error>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="field.type === 'date'" appearance="outline">
+        <mat-label>{{ field.label }}</mat-label>
+        <input matInput type="date" [formControlName]="field.key">
+        <mat-error *ngIf="form.get(field.key)?.hasError('required')">Campo requerido</mat-error>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="field.type === 'select'" appearance="outline">
+        <mat-label>{{ field.label }}</mat-label>
+        <mat-select [formControlName]="field.key">
+          <mat-option *ngFor="let opt of selectOptions[field.key]" [value]="opt.id">
+            {{ optionLabel(field, opt) }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get(field.key)?.hasError('required')">Campo requerido</mat-error>
+      </mat-form-field>
+
+      <div *ngIf="field.type === 'checkbox'" style="display:flex; align-items:center;">
+        <mat-checkbox [formControlName]="field.key">{{ field.label }}</mat-checkbox>
+      </div>
+
+    </ng-container>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="save()" [disabled]="loadingOptions">Guardar</button>
+</mat-dialog-actions>

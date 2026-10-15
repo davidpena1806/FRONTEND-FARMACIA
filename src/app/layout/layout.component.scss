@@ -1,0 +1,10 @@
+::ng-deep .active-link {
+  background-color: rgba(63, 81, 181, 0.1);
+  color: #3f51b5;
+  font-weight: 500;
+}
+
+mat-sidenav-content {
+  overflow-y: auto;
+  height: 100%;
+}

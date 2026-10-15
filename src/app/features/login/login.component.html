@@ -1,0 +1,33 @@
+<div class="login-wrapper">
+  <mat-card class="login-card">
+    <div class="login-header">
+      <mat-icon>local_pharmacy</mat-icon>
+      <h1>Sistema de Farmacia</h1>
+      <p>Inicia sesión para continuar</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Correo</mat-label>
+        <input matInput type="email" formControlName="correo" autocomplete="username">
+        <mat-error *ngIf="form.get('correo')?.hasError('required')">El correo es obligatorio</mat-error>
+        <mat-error *ngIf="form.get('correo')?.hasError('email')">Correo no válido</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Contraseña</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" autocomplete="current-password">
+        <button mat-icon-button matSuffix type="button" (click)="hide = !hide">
+          <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-error>La contraseña es obligatoria</mat-error>
+      </mat-form-field>
+
+      <p class="error-msg" *ngIf="errorMsg">{{ errorMsg }}</p>
+
+      <button mat-flat-button color="primary" type="submit" class="full-width" [disabled]="loading">
+        {{ loading ? 'Ingresando...' : 'Ingresar' }}
+      </button>
+    </form>
+  </mat-card>
+</div>
